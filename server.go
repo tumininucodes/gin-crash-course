@@ -8,6 +8,7 @@ import (
 	"github.com/tumininucodes/gin-crash-course/controller"
 	"github.com/tumininucodes/gin-crash-course/entity/service"
 	"github.com/tumininucodes/gin-crash-course/middlewares"
+	gindump "github.com/tpkeeper/gin-dump"
 )
 
 var(
@@ -25,7 +26,7 @@ func main() {
 	setupLogOuput()
 	server := gin.New()
 
-	server.Use(gin.Recovery(), middlewares.Logger())
+	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth(), gindump.Dump())
 
 	server.GET("/videos", func(ctx *gin.Context) {
 		ctx.JSON(200, videoController.FindAll())
