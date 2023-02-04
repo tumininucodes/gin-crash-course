@@ -52,7 +52,7 @@ func main() {
 
 	// viewRoutes := server.Group("/view")
 	// {
-		// viewRoutes.GET("/videos", videoController)
+	// 	viewRoutes.GET("/videos", videoController)
 	// }
 	
 	server.Run()
