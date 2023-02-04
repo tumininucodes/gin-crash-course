@@ -5,10 +5,10 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	gindump "github.com/tpkeeper/gin-dump"
 	"github.com/tumininucodes/gin-crash-course/controller"
 	"github.com/tumininucodes/gin-crash-course/entity/service"
 	"github.com/tumininucodes/gin-crash-course/middlewares"
-	gindump "github.com/tpkeeper/gin-dump"
 )
 
 var(
@@ -32,13 +32,27 @@ func main() {
 
 	server.LoadHTMLGlob("templates/*.html")
 
-	server.GET("/videos", func(ctx *gin.Context) {
-		ctx.JSON(200, videoController.FindAll())
-	})
+	apiRoutes := server.Group("/api") 
+	{
+		apiRoutes.GET("/videos", func(ctx *gin.Context) {
+			ctx.JSON(200, videoController.FindAll())
+		})
+	
+		apiRoutes.POST("/videos", func(ctx *gin.Context) {
+			// err := videoController.Save(ctx)
+			// if err != nil {
+			// 	ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			// } else {
+	
+			// }
+			ctx.JSON(200, videoController.Save(ctx))
+		})
+	}
 
-	server.POST("/videos", func(ctx *gin.Context) {
-		ctx.JSON(200, videoController.Save(ctx))
-	})
-
+	viewRoutes := server.Group("/view")
+	{
+		viewRoutes.GET("/videos", videoController)
+	}
+	
 	server.Run()
 }
