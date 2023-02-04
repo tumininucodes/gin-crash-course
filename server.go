@@ -28,6 +28,10 @@ func main() {
 
 	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth(), gindump.Dump())
 
+	server.Static("/css", ".templates/css")
+
+	server.LoadHTMLGlob("templates/*.html")
+
 	server.GET("/videos", func(ctx *gin.Context) {
 		ctx.JSON(200, videoController.FindAll())
 	})
