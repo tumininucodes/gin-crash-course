@@ -1,15 +1,10 @@
 package main
 
 import (
-	"io"
 	"net/http"
-	"os"
-
 	"github.com/gin-gonic/gin"
-	gindump "github.com/tpkeeper/gin-dump"
 	"github.com/tumininucodes/gin-crash-course/controller"
 	"github.com/tumininucodes/gin-crash-course/entity/service"
-	"github.com/tumininucodes/gin-crash-course/middlewares"
 )
 
 var (
@@ -17,17 +12,10 @@ var (
 	videoController controller.VideoController = controller.New(videoService)
 )
 
-func setupLogOuput() {
-	f, _ := os.Create("gin.log")
-	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
-}
 
 func main() {
 
-	setupLogOuput()
-	server := gin.New()
-
-	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.BasicAuth(), gindump.Dump())
+	server := gin.Default()
 
 	server.Static("/css", ".templates/css")
 
