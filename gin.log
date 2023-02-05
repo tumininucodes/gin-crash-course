@@ -10,9 +10,15 @@
 	- header.html
 	- index.html
 
-[GIN-debug] GET    /api/videos               --> main.main.func1 (5 handlers)
-[GIN-debug] POST   /api/videos               --> main.main.func2 (5 handlers)
+[GIN-debug] GET    /videos                   --> main.main.func1 (5 handlers)
+[GIN-debug] POST   /videos                   --> main.main.func2 (5 handlers)
+[GIN-debug] GET    /api/videos               --> main.main.func3 (5 handlers)
+[GIN-debug] POST   /api/videos               --> main.main.func4 (5 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
-[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
 [GIN-debug] Listening and serving HTTP on :8080
+::1 - [05 Feb 23 01:14 WAT] POST /videos 200 751.625µs 
+::1 - [05 Feb 23 01:17 WAT] POST /videos 200 344.833µs 
+::1 - [05 Feb 23 01:17 WAT] GET /videos 200 795.167µs 
+[GIN-debug] [WARNING] Headers were already written. Wanted to override status code 400 with 200
+::1 - [05 Feb 23 01:38 WAT] POST /videos 200 320.334µs 

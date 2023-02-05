@@ -12,8 +12,8 @@ import (
 	"github.com/tumininucodes/gin-crash-course/middlewares"
 )
 
-var(
-	videoService service.VideoService = service.New()
+var (
+	videoService    service.VideoService       = service.New()
 	videoController controller.VideoController = controller.New(videoService)
 )
 
@@ -33,19 +33,33 @@ func main() {
 
 	server.LoadHTMLGlob("templates/*.html")
 
-	apiRoutes := server.Group("/api") 
+	server.GET("/videos", func(ctx *gin.Context) {
+		ctx.JSON(200, videoController.FindAll())
+	})
+
+	server.POST("/videos", func(ctx *gin.Context) {
+		err := videoController.Save(ctx)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		} else {
+			ctx.JSON(http.StatusOK, gin.H{"message": "Video input is valid"})
+		}
+		ctx.JSON(200, videoController.Save(ctx))
+	})
+
+	apiRoutes := server.Group("/api")
 	{
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
 			ctx.JSON(200, videoController.FindAll())
 		})
-	
+
 		apiRoutes.POST("/videos", func(ctx *gin.Context) {
 			err := videoController.Save(ctx)
 			if err != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			} else {
 				ctx.JSON(http.StatusOK, gin.H{"message": "Video input is valid"})
-			} 
+			}
 			ctx.JSON(200, videoController.Save(ctx))
 		})
 	}
@@ -54,6 +68,6 @@ func main() {
 	// {
 	// 	viewRoutes.GET("/videos", videoController)
 	// }
-	
-	server.Run()
+
+	server.Run(":8080")
 }
