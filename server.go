@@ -2,9 +2,12 @@ package main
 
 import (
 	"net/http"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/tumininucodes/gin-crash-course/controller"
 	"github.com/tumininucodes/gin-crash-course/entity/service"
+	"github.com/tumininucodes/gin-crash-course/middlewares"
 )
 
 var (
@@ -21,7 +24,7 @@ func main() {
 
 	server.LoadHTMLGlob("templates/*.html")
 
-	apiRoutes := server.Group("/api")
+	apiRoutes := server.Group("/api", middlewares.BasicAuth())
 	{
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
 			ctx.JSON(200, videoController.FindAll())
@@ -43,5 +46,11 @@ func main() {
 		viewRoutes.GET("/videos", videoController.ShowAll)
 	}
 
-	server.Run(":8080")
+	// We can setup this env variabke from the EB console
+	port := os.Getenv("PORT")
+	// Elastic Beanstalk forwards requests to port 5000
+	if port == "" {
+		port = "5000"
+	}
+	server.Run(":" + port)
 }
