@@ -1,1 +1,19 @@
 !application
+
+# Ignore source Files
+
+controller/
+entity/
+middlewares/
+service/
+templates/
+validators/
+server.go
+go.mod
+go.sum
+README.md
+Dockerfile
+
+# Ignore git Files
+.git/
+.gitignore 
